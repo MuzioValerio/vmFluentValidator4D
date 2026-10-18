@@ -1,0 +1,4 @@
+/* Risorse del package vmFluentValidator.
+   Vuoto di proposito: serve solo a soddisfare {$R *.res} nel .dpk quando si
+   compila da riga di comando. RAD Studio rigenera/aggiorna il .res da solo
+   (version info, ecc.) al primo salvataggio del package dalla IDE. */

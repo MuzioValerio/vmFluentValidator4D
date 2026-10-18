@@ -1,0 +1,5 @@
+/* Risorse della suite di test FluentValidator.
+   Vuoto di proposito: serve solo a soddisfare {$R *.res} nel .dpr quando si
+   compila da riga di comando. Il .res non e' sotto controllo di versione
+   (vedi .gitignore) e viene rigenerato da build.ps1 / build_tests.bat con
+   brcc32; RAD Studio lo rigenera da solo quando si compila dalla IDE. */

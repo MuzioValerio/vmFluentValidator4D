@@ -1,0 +1,104 @@
+{-----------------------------------------------------------------------------
+  vmFluentValidator - package runtime
+
+  Contiene tutte le unit di ..\src e ..\src\Validators.
+  Package solo-runtime (direttiva RUNONLY): la libreria non registra componenti
+  ne' expert IDE, quindi non c'e' nulla da installare nella IDE. Serve a
+  compilare e distribuire il motore come BPL/DCP riusabile.
+
+  Prerequisito per compilare: aggiungere ..\src e ..\src\Validators allo unit
+  search path del package (gia' impostato in vmFluentValidator.dproj).
+-----------------------------------------------------------------------------}
+
+package vmFluentValidator;
+
+{$R *.res}
+{$IFDEF IMPLICITBUILDING This IFDEF should not be used by users}
+{$ALIGN 8}
+{$ASSERTIONS ON}
+{$BOOLEVAL OFF}
+{$DEBUGINFO OFF}
+{$EXTENDEDSYNTAX ON}
+{$IMPORTEDDATA ON}
+{$IOCHECKS ON}
+{$LOCALSYMBOLS ON}
+{$LONGSTRINGS ON}
+{$OPENSTRINGS ON}
+{$OPTIMIZATION OFF}
+{$OVERFLOWCHECKS OFF}
+{$RANGECHECKS OFF}
+{$REFERENCEINFO ON}
+{$SAFEDIVIDE OFF}
+{$STACKFRAMES ON}
+{$TYPEDADDRESS OFF}
+{$VARSTRINGCHECKS ON}
+{$WRITEABLECONST OFF}
+{$MINENUMSIZE 1}
+{$IMAGEBASE $400000}
+{$DEFINE DEBUG}
+{$ENDIF IMPLICITBUILDING}
+{$DESCRIPTION 'vmFluentValidator - motore di validazione fluent per Delphi'}
+{$LIBSUFFIX AUTO}
+{$RUNONLY}
+{$IMPLICITBUILD ON}
+
+requires
+  rtl;
+
+contains
+  { Core }
+  FluentValidator.Intf in '..\src\FluentValidator.Intf.pas',
+  FluentValidator in '..\src\FluentValidator.pas',
+  FluentValidator.EnumConverter in '..\src\FluentValidator.EnumConverter.pas',
+  FluentValidator.Validators in '..\src\FluentValidator.Validators.pas',
+
+  { Messaggi e lingue }
+  FluentValidator.Messages in '..\src\FluentValidator.Messages.pas',
+  FluentValidator.Language.Italian in '..\src\FluentValidator.Language.Italian.pas',
+
+  { Validatori: presenza / vuoto }
+  FluentValidator.NotNullValidator in '..\src\Validators\FluentValidator.NotNullValidator.pas',
+  FluentValidator.NullValidator in '..\src\Validators\FluentValidator.NullValidator.pas',
+  FluentValidator.NotEmptyValidator in '..\src\Validators\FluentValidator.NotEmptyValidator.pas',
+  FluentValidator.EmptyValidator in '..\src\Validators\FluentValidator.EmptyValidator.pas',
+  FluentValidator.CollectionNotEmptyValidator in '..\src\Validators\FluentValidator.CollectionNotEmptyValidator.pas',
+
+  { Validatori: lunghezza }
+  FluentValidator.LengthValidator in '..\src\Validators\FluentValidator.LengthValidator.pas',
+  FluentValidator.MaxLengthValidator in '..\src\Validators\FluentValidator.MaxLengthValidator.pas',
+  FluentValidator.MinLengthValidator in '..\src\Validators\FluentValidator.MinLengthValidator.pas',
+
+  { Validatori: uguaglianza }
+  FluentValidator.EqualValidator in '..\src\Validators\FluentValidator.EqualValidator.pas',
+  FluentValidator.NotEqualValidator in '..\src\Validators\FluentValidator.NotEqualValidator.pas',
+
+  { Validatori: confronti numerici }
+  FluentValidator.NumericComparisonValidator in '..\src\Validators\FluentValidator.NumericComparisonValidator.pas',
+  FluentValidator.GreaterThanValidator in '..\src\Validators\FluentValidator.GreaterThanValidator.pas',
+  FluentValidator.GreaterThanOrEqualValidator in '..\src\Validators\FluentValidator.GreaterThanOrEqualValidator.pas',
+  FluentValidator.LessThanValidator in '..\src\Validators\FluentValidator.LessThanValidator.pas',
+  FluentValidator.LessThanOrEqualValidator in '..\src\Validators\FluentValidator.LessThanOrEqualValidator.pas',
+  FluentValidator.InclusiveBetweenValidator in '..\src\Validators\FluentValidator.InclusiveBetweenValidator.pas',
+  FluentValidator.ExclusiveBetweenValidator in '..\src\Validators\FluentValidator.ExclusiveBetweenValidator.pas',
+  FluentValidator.PrecisionScaleValidator in '..\src\Validators\FluentValidator.PrecisionScaleValidator.pas',
+
+  { Validatori: stringhe e formati }
+  FluentValidator.RegexValidator in '..\src\Validators\FluentValidator.RegexValidator.pas',
+  FluentValidator.StartsWithUpperCaseValidator in '..\src\Validators\FluentValidator.StartsWithUpperCaseValidator.pas',
+  FluentValidator.EmailValidator in '..\src\Validators\FluentValidator.EmailValidator.pas',
+  FluentValidator.SimpleEmailValidator in '..\src\Validators\FluentValidator.SimpleEmailValidator.pas',
+  FluentValidator.CreditCardValidator in '..\src\Validators\FluentValidator.CreditCardValidator.pas',
+
+  { Validatori: date }
+  FluentValidator.MustBeInPastValidator in '..\src\Validators\FluentValidator.MustBeInPastValidator.pas',
+  FluentValidator.MustBeInFutureValidator in '..\src\Validators\FluentValidator.MustBeInFutureValidator.pas',
+
+  { Validatori: enumerativi }
+  FluentValidator.EnumValidator in '..\src\Validators\FluentValidator.EnumValidator.pas',
+  FluentValidator.EnumNameValidator in '..\src\Validators\FluentValidator.EnumNameValidator.pas',
+
+  { Validatori: predicati e condizioni }
+  FluentValidator.CustomPredicateValidator in '..\src\Validators\FluentValidator.CustomPredicateValidator.pas',
+  FluentValidator.WhenValidator in '..\src\Validators\FluentValidator.WhenValidator.pas';
+
+end.

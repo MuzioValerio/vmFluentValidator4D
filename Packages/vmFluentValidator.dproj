@@ -1,0 +1,166 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{1667F47C-4399-44ED-9A32-CDE0D2692BDF}</ProjectGuid>
+        <MainSource>vmFluentValidator.dpk</MainSource>
+        <ProjectVersion>20.1</ProjectVersion>
+        <FrameworkType>None</FrameworkType>
+        <Base>True</Base>
+        <Config Condition="'$(Config)'==''">Release</Config>
+        <Platform Condition="'$(Platform)'==''">Win32</Platform>
+        <TargetedPlatforms>3</TargetedPlatforms>
+        <AppType>Package</AppType>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
+        <Base_Win32>true</Base_Win32>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Base)'=='true') or '$(Base_Win64)'!=''">
+        <Base_Win64>true</Base_Win64>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_1)'!=''">
+        <Cfg_1>true</Cfg_1>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win32)'!=''">
+        <Cfg_1_Win32>true</Cfg_1_Win32>
+        <CfgParent>Cfg_1</CfgParent>
+        <Cfg_1>true</Cfg_1>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win64)'!=''">
+        <Cfg_1_Win64>true</Cfg_1_Win64>
+        <CfgParent>Cfg_1</CfgParent>
+        <Cfg_1>true</Cfg_1>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_2)'!=''">
+        <Cfg_2>true</Cfg_2>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
+        <Cfg_2_Win32>true</Cfg_2_Win32>
+        <CfgParent>Cfg_2</CfgParent>
+        <Cfg_2>true</Cfg_2>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win64)'!=''">
+        <Cfg_2_Win64>true</Cfg_2_Win64>
+        <CfgParent>Cfg_2</CfgParent>
+        <Cfg_2>true</Cfg_2>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base)'!=''">
+        <DCC_DcuOutput>.\$(Platform)\$(Config)\dcu</DCC_DcuOutput>
+        <DCC_BplOutput>.\$(Platform)\$(Config)</DCC_BplOutput>
+        <DCC_DcpOutput>.\$(Platform)\$(Config)</DCC_DcpOutput>
+        <DCC_E>false</DCC_E>
+        <DCC_N>true</DCC_N>
+        <DCC_S>false</DCC_S>
+        <DCC_F>false</DCC_F>
+        <DCC_K>false</DCC_K>
+        <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
+        <SanitizedProjectName>vmFluentValidator</SanitizedProjectName>
+        <GenDll>true</GenDll>
+        <GenPackage>true</GenPackage>
+        <RuntimeOnlyPackage>true</RuntimeOnlyPackage>
+        <!--
+          Le unit della libreria vivono fuori dalla cartella del package.
+          Questi due path sono gli stessi che i consumer devono aggiungere al
+          proprio Library Path per usare vmFluentValidator senza il BPL.
+        -->
+        <DCC_UnitSearchPath>..\src;..\src\Validators;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+        <DCC_Description>vmFluentValidator - motore di validazione fluent per Delphi</DCC_Description>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base_Win32)'!=''">
+        <DCC_Define>WIN32;$(DCC_Define)</DCC_Define>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base_Win64)'!=''">
+        <DCC_Define>WIN64;$(DCC_Define)</DCC_Define>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_1)'!=''">
+        <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+        <DCC_DebugDCUs>true</DCC_DebugDCUs>
+        <DCC_Optimize>false</DCC_Optimize>
+        <DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2)'!=''">
+        <DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+        <DCC_DebugInformation>0</DCC_DebugInformation>
+        <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
+        <DCC_SymbolReferenceInfo>0</DCC_SymbolReferenceInfo>
+        <DCC_Optimize>true</DCC_Optimize>
+    </PropertyGroup>
+    <ItemGroup>
+        <DelphiCompile Include="$(MainSource)">
+            <MainSource>MainSource</MainSource>
+        </DelphiCompile>
+        <DCCReference Include="rtl.dcp"/>
+        <DCCReference Include="..\src\FluentValidator.Intf.pas"/>
+        <DCCReference Include="..\src\FluentValidator.pas"/>
+        <DCCReference Include="..\src\FluentValidator.Messages.pas"/>
+        <DCCReference Include="..\src\FluentValidator.Language.Italian.pas"/>
+        <DCCReference Include="..\src\FluentValidator.EnumConverter.pas"/>
+        <DCCReference Include="..\src\FluentValidator.Validators.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.NotNullValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.NullValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.NotEmptyValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.EmptyValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.CollectionNotEmptyValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.LengthValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.MaxLengthValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.MinLengthValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.EqualValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.NotEqualValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.NumericComparisonValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.GreaterThanValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.GreaterThanOrEqualValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.LessThanValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.LessThanOrEqualValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.InclusiveBetweenValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.ExclusiveBetweenValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.PrecisionScaleValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.RegexValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.StartsWithUpperCaseValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.EmailValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.SimpleEmailValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.CreditCardValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.MustBeInPastValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.MustBeInFutureValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.EnumValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.EnumNameValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.CustomPredicateValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.WhenValidator.pas"/>
+        <BuildConfiguration Include="Release">
+            <Key>Cfg_2</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Base">
+            <Key>Base</Key>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Debug">
+            <Key>Cfg_1</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+    </ItemGroup>
+    <ProjectExtensions>
+        <Borland.Personality>Delphi.Personality.12</Borland.Personality>
+        <Borland.ProjectType>Package</Borland.ProjectType>
+        <BorlandProject>
+            <Delphi.Personality>
+                <Source>
+                    <Source Name="MainSource">vmFluentValidator.dpk</Source>
+                </Source>
+            </Delphi.Personality>
+        </BorlandProject>
+    </ProjectExtensions>
+    <Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')"/>
+    <Import Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj" Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')"/>
+</Project>

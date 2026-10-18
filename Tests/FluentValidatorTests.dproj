@@ -1,0 +1,166 @@
+<Project xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+    <PropertyGroup>
+        <ProjectGuid>{6B8E2E2B-0B40-4D24-9B7E-2F1A9D1C8E10}</ProjectGuid>
+        <ProjectVersion>20.1</ProjectVersion>
+        <FrameworkType>None</FrameworkType>
+        <Base>True</Base>
+        <Config Condition="'$(Config)'==''">Debug</Config>
+        <Platform Condition="'$(Platform)'==''">Win32</Platform>
+        <ProjectName Condition="'$(ProjectName)'==''">FluentValidatorTests</ProjectName>
+        <TargetedPlatforms>3</TargetedPlatforms>
+        <AppType>Console</AppType>
+        <MainSource>FluentValidatorTests.dpr</MainSource>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Base' or '$(Base)'!=''">
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Base)'=='true') or '$(Base_Win32)'!=''">
+        <Base_Win32>true</Base_Win32>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Base)'=='true') or '$(Base_Win64)'!=''">
+        <Base_Win64>true</Base_Win64>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Debug' or '$(Cfg_1)'!=''">
+        <Cfg_1>true</Cfg_1>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win32)'!=''">
+        <Cfg_1_Win32>true</Cfg_1_Win32>
+        <CfgParent>Cfg_1</CfgParent>
+        <Cfg_1>true</Cfg_1>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Cfg_1)'=='true') or '$(Cfg_1_Win64)'!=''">
+        <Cfg_1_Win64>true</Cfg_1_Win64>
+        <CfgParent>Cfg_1</CfgParent>
+        <Cfg_1>true</Cfg_1>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Config)'=='Release' or '$(Cfg_2)'!=''">
+        <Cfg_2>true</Cfg_2>
+        <CfgParent>Base</CfgParent>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win32' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win32)'!=''">
+        <Cfg_2_Win32>true</Cfg_2_Win32>
+        <CfgParent>Cfg_2</CfgParent>
+        <Cfg_2>true</Cfg_2>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="('$(Platform)'=='Win64' and '$(Cfg_2)'=='true') or '$(Cfg_2_Win64)'!=''">
+        <Cfg_2_Win64>true</Cfg_2_Win64>
+        <CfgParent>Cfg_2</CfgParent>
+        <Cfg_2>true</Cfg_2>
+        <Base>true</Base>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base)'!=''">
+        <DCC_DcuOutput>.\$(Platform)\$(Config)\dcu</DCC_DcuOutput>
+        <DCC_ExeOutput>.\$(Platform)\$(Config)</DCC_ExeOutput>
+        <DCC_E>false</DCC_E>
+        <DCC_N>false</DCC_N>
+        <DCC_S>false</DCC_S>
+        <DCC_F>false</DCC_F>
+        <DCC_K>false</DCC_K>
+        <DCC_Namespace>System;Xml;Data;Datasnap;Web;Soap;$(DCC_Namespace)</DCC_Namespace>
+        <SanitizedProjectName>FluentValidatorTests</SanitizedProjectName>
+        <!--
+          Percorso delle unit di DUnitX: la copia inclusa in RAD Studio, la
+          stessa usata da build.ps1, quindi il progetto compila con F9 senza
+          installare nulla. Se preferisci un DUnitX clonato a mano
+          (https://github.com/VSoftTechnologies/DUnitX), sostituisci il
+          percorso qui sotto (relativo o assoluto).
+        -->
+        <DCC_UnitSearchPath>$(BDS)\source\DUnitX;$(DCC_UnitSearchPath)</DCC_UnitSearchPath>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base_Win32)'!=''">
+        <DCC_Define>WIN32;$(DCC_Define)</DCC_Define>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Base_Win64)'!=''">
+        <DCC_Define>WIN64;$(DCC_Define)</DCC_Define>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_1)'!=''">
+        <DCC_Define>DEBUG;$(DCC_Define)</DCC_Define>
+        <DCC_DebugDCUs>true</DCC_DebugDCUs>
+        <DCC_Optimize>false</DCC_Optimize>
+        <DCC_GenerateStackFrames>true</DCC_GenerateStackFrames>
+    </PropertyGroup>
+    <PropertyGroup Condition="'$(Cfg_2)'!=''">
+        <DCC_Define>RELEASE;$(DCC_Define)</DCC_Define>
+        <DCC_DebugInformation>0</DCC_DebugInformation>
+        <DCC_LocalDebugSymbols>false</DCC_LocalDebugSymbols>
+        <DCC_Optimize>true</DCC_Optimize>
+    </PropertyGroup>
+    <ItemGroup>
+        <DelphiCompile Include="$(MainSource)">
+            <MainSource>MainSource</MainSource>
+        </DelphiCompile>
+        <DCCReference Include="..\src\FluentValidator.Intf.pas"/>
+        <DCCReference Include="..\src\FluentValidator.pas"/>
+        <DCCReference Include="..\src\FluentValidator.Messages.pas"/>
+        <DCCReference Include="..\src\FluentValidator.Language.Italian.pas"/>
+        <DCCReference Include="..\src\FluentValidator.EnumConverter.pas"/>
+        <DCCReference Include="..\src\FluentValidator.Validators.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.NotNullValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.NotEmptyValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.LengthValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.MaxLengthValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.MinLengthValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.EqualValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.NotEqualValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.RegexValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.NumericComparisonValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.GreaterThanValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.GreaterThanOrEqualValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.LessThanValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.LessThanOrEqualValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.InclusiveBetweenValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.ExclusiveBetweenValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.CustomPredicateValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.StartsWithUpperCaseValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.EmailValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.SimpleEmailValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.WhenValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.MustBeInPastValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.MustBeInFutureValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.CollectionNotEmptyValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.EnumValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.NullValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.EmptyValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.PrecisionScaleValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.EnumNameValidator.pas"/>
+        <DCCReference Include="..\src\Validators\FluentValidator.CreditCardValidator.pas"/>
+        <DCCReference Include="Test.Fixtures.pas"/>
+        <DCCReference Include="Test.Core.pas"/>
+        <DCCReference Include="Test.Messages.pas"/>
+        <DCCReference Include="Test.WhenUnless.pas"/>
+        <DCCReference Include="Test.Validators.StringTests.pas"/>
+        <DCCReference Include="Test.Validators.NumericTests.pas"/>
+        <DCCReference Include="Test.Validators.DateTests.pas"/>
+        <DCCReference Include="Test.Validators.EmailTests.pas"/>
+        <DCCReference Include="Test.Validators.EnumTests.pas"/>
+        <DCCReference Include="Test.Validators.CollectionTests.pas"/>
+        <DCCReference Include="Test.Validators.PredicateAndIntegration.pas"/>
+        <DCCReference Include="Test.Validators.Phase2Tests.pas"/>
+        <DCCReference Include="Test.Engine.NestedAndForEach.pas"/>
+        <DCCReference Include="Test.Engine.SeverityAndHooks.pas"/>
+        <DCCReference Include="Test.Engine.RuleForRtti.pas"/>
+        <BuildConfiguration Include="Release">
+            <Key>Cfg_2</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Base">
+            <Key>Base</Key>
+        </BuildConfiguration>
+        <BuildConfiguration Include="Debug">
+            <Key>Cfg_1</Key>
+            <CfgParent>Base</CfgParent>
+        </BuildConfiguration>
+    </ItemGroup>
+    <Import Project="$(BDS)\Bin\CodeGear.Delphi.Targets" Condition="Exists('$(BDS)\Bin\CodeGear.Delphi.Targets')"/>
+    <Import Project="$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj" Condition="Exists('$(APPDATA)\Embarcadero\$(BDSAPPDATABASEDIR)\$(PRODUCTVERSION)\UserTools.proj')"/>
+</Project>

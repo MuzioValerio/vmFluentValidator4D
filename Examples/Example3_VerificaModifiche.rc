@@ -1,0 +1,4 @@
+/* Risorse dell'esempio Example3_VerificaModifiche.
+   Vuoto di proposito: serve solo a soddisfare {$R *.res} nel .dpr quando si
+   compila da riga di comando. Il .res non e' sotto controllo di versione
+   (vedi .gitignore) e viene rigenerato da Examples\build.ps1 con brcc32. */

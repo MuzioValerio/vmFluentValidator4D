@@ -1,0 +1,35 @@
+# Artefatti di compilazione Delphi / RAD Studio
+__history/
+__recovery/
+__astcache/
+*.local
+*.identcache
+*.tvsconfig
+
+# Output di build
+[Ww]in32/
+[Ww]in64/
+[Oo]sx*/
+[Aa]ndroid*/
+[Ii]os*/
+[Ll]inux*/
+dcu/
+*.dcu
+*.exe
+*.dll
+*.bpl
+*.bpi
+*.o
+*.obj
+
+# La *.res dei progetti e' rigenerata dall'IDE / dal build
+*.res
+
+# Report dei test (rigenerati a ogni esecuzione)
+Tests/**/dunitx-results.xml
+FluentValidatorTests.xml
+
+# File di lavoro di Claude Code: restano in locale, non vanno pubblicati
+CLAUDE.md
+CLAUDE.local.md
+.claude/
