@@ -18,34 +18,11 @@ uses
   System.Generics.Collections,
   System.Rtti,
   System.TypInfo,
-  FluentValidator.Validators in '..\src\FluentValidator.Validators.pas',
-  FluentValidator in '..\src\FluentValidator.pas',
-  FluentValidator.Intf in '..\src\FluentValidator.Intf.pas',
-  FluentValidator.CustomPredicateValidator in '..\src\Validators\FluentValidator.CustomPredicateValidator.pas',
-  FluentValidator.EqualValidator in '..\src\Validators\FluentValidator.EqualValidator.pas',
-  FluentValidator.NotEqualValidator in '..\src\Validators\FluentValidator.NotEqualValidator.pas',
-  FluentValidator.ExclusiveBetweenValidator in '..\src\Validators\FluentValidator.ExclusiveBetweenValidator.pas',
-  FluentValidator.InclusiveBetweenValidator in '..\src\Validators\FluentValidator.InclusiveBetweenValidator.pas',
-  FluentValidator.GreaterThanOrEqualValidator in '..\src\Validators\FluentValidator.GreaterThanOrEqualValidator.pas',
-  FluentValidator.GreaterThanValidator in '..\src\Validators\FluentValidator.GreaterThanValidator.pas',
-  FluentValidator.LessThanOrEqualValidator in '..\src\Validators\FluentValidator.LessThanOrEqualValidator.pas',
-  FluentValidator.LessThanValidator in '..\src\Validators\FluentValidator.LessThanValidator.pas',
-  FluentValidator.NumericComparisonValidator in '..\src\Validators\FluentValidator.NumericComparisonValidator.pas',
-  FluentValidator.LengthValidator in '..\src\Validators\FluentValidator.LengthValidator.pas',
-  FluentValidator.MaxLengthValidator in '..\src\Validators\FluentValidator.MaxLengthValidator.pas',
-  FluentValidator.MinLengthValidator in '..\src\Validators\FluentValidator.MinLengthValidator.pas',
-  FluentValidator.NotEmptyValidator in '..\src\Validators\FluentValidator.NotEmptyValidator.pas',
-  FluentValidator.NotNullValidator in '..\src\Validators\FluentValidator.NotNullValidator.pas',
-  FluentValidator.RegexValidator in '..\src\Validators\FluentValidator.RegexValidator.pas',
-  FluentValidator.StartsWithUpperCaseValidator in '..\src\Validators\FluentValidator.StartsWithUpperCaseValidator.pas',
-  FluentValidator.EnumConverter in '..\src\FluentValidator.EnumConverter.pas',
-  FluentValidator.EnumValidator in '..\src\Validators\FluentValidator.EnumValidator.pas',
-  FluentValidator.CollectionNotEmptyValidator in '..\src\Validators\FluentValidator.CollectionNotEmptyValidator.pas',
-  FluentValidator.MustBeInPastValidator in '..\src\Validators\FluentValidator.MustBeInPastValidator.pas',
-  FluentValidator.MustBeInFutureValidator in '..\src\Validators\FluentValidator.MustBeInFutureValidator.pas',
-  FluentValidator.WhenValidator in '..\src\Validators\FluentValidator.WhenValidator.pas',
-  FluentValidator.EmailValidator in '..\src\Validators\FluentValidator.EmailValidator.pas',
-  FluentValidator.SimpleEmailValidator in '..\src\Validators\FluentValidator.SimpleEmailValidator.pas';
+  FluentValidator.Intf,
+  FluentValidator,
+  FluentValidator.Messages,
+  FluentValidator.Validators,
+  FluentValidator.EnumConverter;
 
 type
   TRegimeFiscale = (rfOrdinario, rfForfettario, rfMinimi);
@@ -201,13 +178,13 @@ end;
 
 procedure VerificheIsolate;
 var
-  NotNullValidator: TNotNullValidator;
-  NotEmptyValidator: TNotEmptyValidator;
-  CollectionValidator: TCollectionNotEmptyValidator;
-  EnumValidator: TEnumValidator;
-  PastValidator: TMustBeInPastValidator;
-  FutureValidator: TMustBeInFutureValidator;
-  UpperCaseValidator: TStartsWithUpperCaseValidator;
+  NotNullValidator: TNotNull;
+  NotEmptyValidator: TNotEmpty;
+  CollectionValidator: TCollectionNotEmpty;
+  EnumValidator: TEnumVal;
+  PastValidator: TMustBeInPast;
+  FutureValidator: TMustBeInFuture;
+  UpperCaseValidator: TStartsWithUpperCase;
   NilCedente: TCedentePrestatore;
   ListaIntInt: TObjectList<TRigaFattura>;
   ArrayDouble: TArray<Double>;
@@ -218,7 +195,7 @@ begin
 
   // --- Fix NotNull: riferimento a oggetto nil ---
   NilCedente := nil;
-  NotNullValidator := TNotNullValidator.Create;
+  NotNullValidator := TNotNull.Create;
   try
     StampaEsito('NotNull su oggetto nil', False,
       NotNullValidator.IsValid(TValue.From<TCedentePrestatore>(NilCedente)));
@@ -227,7 +204,7 @@ begin
   end;
 
   // --- Fix NotEmpty: Integer/Currency a zero e oggetto nil ---
-  NotEmptyValidator := TNotEmptyValidator.Create;
+  NotEmptyValidator := TNotEmpty.Create;
   try
     StampaEsito('NotEmpty su Integer = 0', False,
       NotEmptyValidator.IsValid(TValue.From<Integer>(0)));
@@ -245,7 +222,7 @@ begin
   WriteLn;
 
   // --- Fix CollectionNotEmpty: generalizzazione RTTI (non solo TList<TObject>) ---
-  CollectionValidator := TCollectionNotEmptyValidator.Create;
+  CollectionValidator := TCollectionNotEmpty.Create;
   try
     ListaIntInt := TObjectList<TRigaFattura>.Create(True);
     try
@@ -272,7 +249,7 @@ begin
   WriteLn;
 
   // --- Fix EnumValidator: IsEnumValue/IsEnumName non esistevano, ora compila ---
-  EnumValidator := TEnumValidator.Create(TypeInfo(TRegimeFiscale));
+  EnumValidator := TEnumVal.Create(TypeInfo(TRegimeFiscale));
   try
     StampaEsito('IsInEnum su Integer valido (Ord(rfMinimi))', True,
       EnumValidator.IsValid(TValue.From<Integer>(Ord(rfMinimi))));
@@ -289,7 +266,7 @@ begin
 
   // --- Fix Trunc su MustBeInPast/MustBeInFuture: deterministico per "oggi" ---
   Oggi := Trunc(Now); // data pura, ora = 00:00, indipendentemente da quando si esegue il test
-  PastValidator := TMustBeInPastValidator.Create(False);
+  PastValidator := TMustBeInPast.Create(False);
   try
     StampaEsito('MustBeInPast(IncludeToday=False) su data di oggi', False,
       PastValidator.IsValid(TValue.From<TDateTime>(Oggi)));
@@ -297,7 +274,7 @@ begin
     PastValidator.Free;
   end;
 
-  PastValidator := TMustBeInPastValidator.Create(True);
+  PastValidator := TMustBeInPast.Create(True);
   try
     StampaEsito('MustBeInPast(IncludeToday=True) su data di oggi', True,
       PastValidator.IsValid(TValue.From<TDateTime>(Oggi)));
@@ -305,7 +282,7 @@ begin
     PastValidator.Free;
   end;
 
-  FutureValidator := TMustBeInFutureValidator.Create(False);
+  FutureValidator := TMustBeInFuture.Create(False);
   try
     StampaEsito('MustBeInFuture(IncludeToday=False) su data di oggi', False,
       FutureValidator.IsValid(TValue.From<TDateTime>(Oggi)));
@@ -313,7 +290,7 @@ begin
     FutureValidator.Free;
   end;
 
-  FutureValidator := TMustBeInFutureValidator.Create(True);
+  FutureValidator := TMustBeInFuture.Create(True);
   try
     StampaEsito('MustBeInFuture(IncludeToday=True) su data di oggi', True,
       FutureValidator.IsValid(TValue.From<TDateTime>(Oggi)));
@@ -323,7 +300,7 @@ begin
   WriteLn;
 
   // --- Fix StartsWithUpperCase: lettere accentate ---
-  UpperCaseValidator := TStartsWithUpperCaseValidator.Create;
+  UpperCaseValidator := TStartsWithUpperCase.Create;
   try
     StampaEsito('StartsWithUpperCase su ''Élise''', True,
       UpperCaseValidator.IsValid(TValue.From<string>('Élise')));
@@ -500,10 +477,7 @@ begin
   try
     VerificheIsolate;
     ScenarioEndToEnd;
-
     WriteLn;
-    WriteLn('Premi INVIO per uscire...');
-    ReadLn;
   except
     on E: Exception do
     begin
@@ -511,4 +485,6 @@ begin
       ReadLn;
     end;
   end;
+  WriteLn('Premi INVIO per uscire...');
+  ReadLn;
 end.

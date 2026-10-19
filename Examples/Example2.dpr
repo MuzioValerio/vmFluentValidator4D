@@ -6,32 +6,10 @@
 
 uses
   System.SysUtils,
-  FluentValidator.Validators in '..\src\FluentValidator.Validators.pas',
-  FluentValidator in '..\src\FluentValidator.pas',
-  FluentValidator.Intf in '..\src\FluentValidator.Intf.pas',
-  FluentValidator.CustomPredicateValidator in '..\src\Validators\FluentValidator.CustomPredicateValidator.pas',
-  FluentValidator.EqualValidator in '..\src\Validators\FluentValidator.EqualValidator.pas',
-  FluentValidator.ExclusiveBetweenValidator in '..\src\Validators\FluentValidator.ExclusiveBetweenValidator.pas',
-  FluentValidator.GreaterThanOrEqualValidator in '..\src\Validators\FluentValidator.GreaterThanOrEqualValidator.pas',
-  FluentValidator.GreaterThanValidator in '..\src\Validators\FluentValidator.GreaterThanValidator.pas',
-  FluentValidator.InclusiveBetweenValidator in '..\src\Validators\FluentValidator.InclusiveBetweenValidator.pas',
-  FluentValidator.LengthValidator in '..\src\Validators\FluentValidator.LengthValidator.pas',
-  FluentValidator.LessThanOrEqualValidator in '..\src\Validators\FluentValidator.LessThanOrEqualValidator.pas',
-  FluentValidator.LessThanValidator in '..\src\Validators\FluentValidator.LessThanValidator.pas',
-  FluentValidator.MaxLengthValidator in '..\src\Validators\FluentValidator.MaxLengthValidator.pas',
-  FluentValidator.MinLengthValidator in '..\src\Validators\FluentValidator.MinLengthValidator.pas',
-  FluentValidator.NotEmptyValidator in '..\src\Validators\FluentValidator.NotEmptyValidator.pas',
-  FluentValidator.NotEqualValidator in '..\src\Validators\FluentValidator.NotEqualValidator.pas',
-  FluentValidator.NotNullValidator in '..\src\Validators\FluentValidator.NotNullValidator.pas',
-  FluentValidator.RegexValidator in '..\src\Validators\FluentValidator.RegexValidator.pas',
-  FluentValidator.StartsWithUpperCaseValidator in '..\src\Validators\FluentValidator.StartsWithUpperCaseValidator.pas',
-  FluentValidator.EnumValidator in '..\src\Validators\FluentValidator.EnumValidator.pas',
-  FluentValidator.CollectionNotEmptyValidator in '..\src\Validators\FluentValidator.CollectionNotEmptyValidator.pas',
-  FluentValidator.MustBeInPastValidator in '..\src\Validators\FluentValidator.MustBeInPastValidator.pas',
-  FluentValidator.WhenValidator in '..\src\Validators\FluentValidator.WhenValidator.pas',
-  FluentValidator.EmailValidator in '..\src\Validators\FluentValidator.EmailValidator.pas',
-  FluentValidator.SimpleEmailValidator in '..\src\Validators\FluentValidator.SimpleEmailValidator.pas',
-  FluentValidator.MustBeInFutureValidator in '..\src\Validators\FluentValidator.MustBeInFutureValidator.pas';
+  FluentValidator.Intf,
+  FluentValidator,
+  FluentValidator.Messages,
+  FluentValidator.Validators;
 
 type
   TCustomer = class
@@ -130,73 +108,78 @@ begin
     .NotEmpty;
 end;
 
+procedure Run;
 var
   Customer: TCustomer;
   Validator: IValidator<TCustomer>;
   Result: IValidationResult;
   Error: IValidationError;
+begin
+  Validator := TCustomerValidator.Create;
+
+  // Test 1: Tutto valido
+  Customer := TCustomer.Create;
+  try
+    Customer.Name := 'Mario';
+    Customer.SurName := 'Rossi';
+    Customer.Age := 30;
+    Customer.Email := 'mario_rossi@libero.it';
+    Customer.Role := 'Standard';
+
+    Result := Validator.Validate(Customer);
+    WriteLn('Test 1 - Valido: ', Result.IsValid);
+    if not Result.IsValid then
+      for Error in Result.Errors do
+        WriteLn('  ', Error.PropertyName, ': ', Error.ErrorMessage);
+  finally
+    Customer.Free;
+  end;
+
+  // Test 2: Age fuori range
+  Customer := TCustomer.Create;
+  try
+    Customer.Name := 'Luigi';
+    Customer.SurName := 'Verdi';
+    Customer.Age := 200;  // Troppo alto!
+    Customer.Email := 'luigi@example.com';
+    Customer.Role := 'Standard';
+
+    Result := Validator.Validate(Customer);
+    WriteLn('Test 2 - Age troppo alto: ', Result.IsValid);
+    if not Result.IsValid then
+      for Error in Result.Errors do
+        WriteLn('  ', Error.PropertyName, ': ', Error.ErrorMessage);
+  finally
+    Customer.Free;
+  end;
+
+  // Test 3: Senior con età non appropriata
+  Customer := TCustomer.Create;
+  try
+    Customer.Name := 'Anna';
+    Customer.SurName := 'Bianchi';
+    Customer.Age := 40;  // Senior dovrebbe essere > 63
+    Customer.Email := 'anna@example.com';
+    Customer.Role := 'Senior';
+
+    Result := Validator.Validate(Customer);
+    WriteLn('Test 3 - Senior non valido: ', Result.IsValid);
+    if not Result.IsValid then
+      for Error in Result.Errors do
+        WriteLn('  ', Error.PropertyName, ': ', Error.ErrorMessage);
+  finally
+    Customer.Free;
+  end;
+end;
 
 begin
   try
-    Validator := TCustomerValidator.Create;
-
-    // Test 1: Tutto valido
-    Customer := TCustomer.Create;
-    try
-      Customer.Name := 'Muzio Valerio';
-      Customer.SurName := 'Rossi';
-      Customer.Age := 30;
-      Customer.Email := 'muzio_valerio@libero.it';
-      Customer.Role := 'Standard';
-
-      Result := Validator.Validate(Customer);
-      WriteLn('Test 1 - Valido: ', Result.IsValid);
-      if not Result.IsValid then
-        for Error in Result.Errors do
-          WriteLn('  ', Error.PropertyName, ': ', Error.ErrorMessage);
-    finally
-      Customer.Free;
-    end;
-
-    // Test 2: Age fuori range
-    Customer := TCustomer.Create;
-    try
-      Customer.Name := 'Luigi';
-      Customer.SurName := 'Verdi';
-      Customer.Age := 200;  // Troppo alto!
-      Customer.Email := 'luigi@example.com';
-      Customer.Role := 'Standard';
-
-      Result := Validator.Validate(Customer);
-      WriteLn('Test 2 - Age troppo alto: ', Result.IsValid);
-      if not Result.IsValid then
-        for Error in Result.Errors do
-          WriteLn('  ', Error.PropertyName, ': ', Error.ErrorMessage);
-    finally
-      Customer.Free;
-    end;
-
-    // Test 3: Senior con età non appropriata
-    Customer := TCustomer.Create;
-    try
-      Customer.Name := 'Anna';
-      Customer.SurName := 'Bianchi';
-      Customer.Age := 40;  // Senior dovrebbe essere > 63
-      Customer.Email := 'anna@example.com';
-      Customer.Role := 'Senior';
-
-      Result := Validator.Validate(Customer);
-      WriteLn('Test 3 - Senior invalido: ', Result.IsValid);
-      if not Result.IsValid then
-        for Error in Result.Errors do
-          WriteLn('  ', Error.PropertyName, ': ', Error.ErrorMessage);
-    finally
-      Customer.Free;
-    end;
-
-    ReadLn;
+    Run;
   except
     on E: Exception do
       Writeln(E.ClassName, ': ', E.Message);
   end;
+
+  WriteLn('Press ENTER to exit...');
+  ReadLn;
 end.
